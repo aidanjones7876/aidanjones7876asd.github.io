@@ -63,7 +63,7 @@ function decideSpeed(){
 
 // this generates an id for a circle given the circle's number
 function getId(number){
-    return "circle" + number; ()
+    return "circle" + number;
 }
 
 // this adds a circle into the HTML
@@ -84,13 +84,13 @@ function addNewCircleElement(circle, id){
 //////////////////
 
 // this should move all of the circles
-function update){
+function update (){
 
     // loop over the circles array. We use the maxCircles variable instead of circles.length
     // to make seeing issues in the debugger slightly easier (in practice, you should use
     // circles.length, but do NOT change it here)
     for (var i = 0; i < maxCircles; i++){
-        var circle = circles[j];
+        var circle = maxCircles[i];
 
         // move the circle
         moveCircle(circle);
@@ -117,7 +117,7 @@ function moveCircle(circle){
 function bounceCircle(circle){
 
     // this bounces off the left wall
-    if (circle.x < 0{
+    if (circle.x < 0){
         circle.x -= circle.speedX;
         circle.speedX *= -1;
     }
@@ -139,12 +139,10 @@ function bounceCircle(circle){
 }
 
 // this redraws the circle's position on the screen
-function updateCircleOnScreen(circle){
+function updateCircleOnScreen(circle){    
     maxCircles = 0;
 
     // these lines redraw the circle's position
     $(circle.id).css('left', circle.x);
     $(circle.id).css('top', circle.y);
 }
-
-});
