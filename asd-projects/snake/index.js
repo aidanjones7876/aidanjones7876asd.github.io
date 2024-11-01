@@ -13,6 +13,13 @@ var highScoreElement = $("#highScore");
 // Game Variables
 var snake = {};
 var apple = {};
+function makeApple () {
+  apple.element = $("<div>").addClass("apple").appendTo(board);
+  var randomPosition = getRandomAvailablePosition();
+  apple.row = randomPosition.row;
+  apple.column = randomPosition.column;
+  repositionSquare(apple);
+}
 // Constant Variables
 var ROWS = 20;
 var COLUMNS = 20;
@@ -42,11 +49,23 @@ init();
 
 function init() {
   // TODO 4c-2: initialize the snake
-
+  var snakeSquare = {};
+  snakeSquare.element = $("<div>").addClass("snake").appendTo(board);
+  snakeSquare.row = row;
+  snakeSquare.column = column;
+  repositionSquare(snakeSquare);
+  if (snake.body.length === 0) {
+    snakeSquare.element.attr("id", "snake-head");
+  }
+  snake.body.push(snakeSquare);
+  snake.tail = snakeSquare;
+  snake.body = [];
+  makeSnakeSquare(10, 10);
+  snake,head = snake.body[0];
   // TODO 4b-2: initialize the apple
-
+  makeApple();
   // TODO 5a: Initialize the interval
-
+  updateInterval = setInterval(update, 100);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
