@@ -13,6 +13,7 @@ var highScoreElement = $("#highScore");
 // Game Variables
 var snake = {};
 var apple = {};
+var score = 0;
 // Constant Variables
 var ROWS = 20;
 var COLUMNS = 20;
@@ -111,7 +112,7 @@ function moveSnake() {
   column/row properties. 
   
   */
-
+  
   //Before moving the head, check for a new direction from the keyboard input
   checkForNewDirection();
 
@@ -141,16 +142,16 @@ function hasHitWall() {
   board, false otherwise.
   HINT: What will the row and column of the snake's head be if this were the case?
   */
-  if (snake.head.column === COLUMNS) {
+  if (snake.head.column > COLUMNS) {
     return true;
   }
-  else if (snake.head.column === 0) {
+  else if (snake.head.column < -0.5) {
     return true;
   }
-  else if (snake.head.row === ROWS) {
+  else if (snake.head.row > ROWS) {
     return true;
   }
-  else if (snake.head.row === 0) {
+  else if (snake.head.row < -0.5) {
     return true;
   }
   else {
@@ -166,17 +167,13 @@ function hasCollidedWithApple() {
   
   HINT: Both the apple and the snake's head are aware of their own row and column
   */
-  if (hasCollidedWithApple()) {
-    handleAppleCollision();
-  }
-  if (apple.row === snake.head.row) {
+  if (apple.row === snake.head.row && apple.column === snake.head.column) {
     return true;
+  } else {
+    return false;
   }
-  else if (apple.column === snake.head.column) {
-    return true;
-  }
-  return false;
-}
+} 
+
 
 function handleAppleCollision() {
   // increase the score and update the score DOM element
@@ -199,8 +196,24 @@ function handleAppleCollision() {
   var row = 0;
   var column = 0;
 
-  // code to determine the row and column of the snakeSquare to add to the snake
 
+  // code to determine the row and column of the snakeSquare to add to the snake
+  if (snake.tail.direction === "right") {
+    row = snake.tail.row;
+    column = snake.tail.column - 1;
+  }
+  else if (snake.tail.direction === "left") {
+    row = snake.tail.row;
+    column = snake.tail.column + 1;
+  }
+  else if (snake.tail.direction === "down") {
+    row = snake.tail.row - 1;
+    column = snake.tail.column;
+  }
+  else if (snake.tail.direction === "up") {
+    row = snake.tail.row + 1;
+    column = snake.tail.column;
+  }
   makeSnakeSquare(row, column);
 }
 
