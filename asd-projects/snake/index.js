@@ -243,20 +243,75 @@ function hasCollidedWithSnake() {
 }
 
 function endGame() {
-  // stop update function from running
+  // Stop the update function from running
   clearInterval(updateInterval);
 
-  // clear board of all elements
+  // Clear the board of all elements
   board.empty();
 
-  // update the highScoreElement to display the highScore
+  // Update the high score
   highScoreElement.text("High Score: " + calculateHighScore());
-  scoreElement.text("Score: 0");
-  score = 0;
 
-  // restart the game after 500 ms
-  setTimeout(init, 500);
+  // Display the end game screen
+  showEndGameScreen();
 }
+
+function showEndGameScreen() {
+  // Create an overlay for the end game screen
+  var endGameScreen = $("<div>").addClass("end-game-screen").appendTo(board);
+  
+  // Display the final score and high score
+  var message = $("<div>").addClass("end-game-message").appendTo(endGameScreen);
+  message.html(`
+    <h2>Game Over</h2>
+    <p>Score: ${score}</p>
+    <p>High Score: ${sessionStorage.getItem("highScore") || 0}</p>
+    <button id="restartButton">Play Again</button>
+  `);
+  
+  // Restart the game when the button is clicked
+  $("#restartButton").on("click", function() {
+    endGameScreen.remove(); // Remove the end game screen
+    score = 0;
+    scoreElement.text("Score: 0"); // Reset the score display
+    init(); // Start a new game
+  });
+}
+
+// Add some CSS for the end game screen (you can adjust as needed)
+$("<style>")
+  .prop("type", "text/css")
+  .html(`
+    .end-game-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-family: Arial, sans-serif;
+      z-index: 10;
+    }
+    .end-game-message {
+      text-align: center;
+    }
+    .end-game-message h2 {
+      font-size: 2em;
+      margin: 0;
+    }
+    #restartButton {
+      padding: 10px 20px;
+      font-size: 1em;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+  `)
+  .appendTo("head");
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////// HELPER FUNCTIONS ////////////////////////////////////
@@ -359,15 +414,23 @@ function getRandomAvailablePosition() {
     not occupied by a snakeSquare in the snake's body. If it is then set 
     spaceIsAvailable to false so that a new position is generated.
     */
+   for (var i = 0; i < snake.body.length; i++) {
+    if (snake.body[i].column === randomPosition.column && snake.body[i].row === randomPosition.row) {
+      // If any part of the snake is at the same position, mark space as unavailable
+      spaceIsAvailable = false;
+      break;
+    }
+   }
   }
 
   return randomPosition;
 }
 
 function calculateHighScore() {
-  // retrieve the high score from session storage if it exists, or set it to 0
-  var highScore = sessionStorage.getItem("highScore") || 0;
+  // Retrieve the high score from session storage, or set it to 0 if it doesn't exist
+  var highScore = parseInt(sessionStorage.getItem("highScore"));
 
+  // Update the high score if the current score is higher
   if (score > highScore) {
     sessionStorage.setItem("highScore", score);
     highScore = score;

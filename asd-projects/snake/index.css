@@ -1,6 +1,10 @@
 
 body {
-  background-color: darkgreen;
+  background-image: url('stare.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top center;
+
 }
 
 #board {
@@ -11,7 +15,7 @@ body {
 }
 
 #score, #highScore {
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
 .snake, .apple {
@@ -23,15 +27,15 @@ body {
 }
 
 .snake {
-  background-color: green;
+  background-color: rgb(123, 45, 164);
   z-index: 2;
 }
 
 #snake-head {
-  background-color: darkgreen;
+  background-color: rgb(72, 9, 95);
 }
 
 .apple {
-  background-color: red;
+  background-color: rgb(231, 64, 64);
   z-index: 1;
 }
