@@ -12,11 +12,23 @@ function runProgram(){
   var FRAMES_PER_SECOND_INTERVAL = 1000 / FRAME_RATE;
   
   // Game Item Objects
+  var KEY = {
+    UP: 38,
+    DOWN: 40,
+    LEFT: 37,
+    RIGHT: 39,
 
+  };
+  var walker = {
+    xPos: 0,
+    yPos: 0,
+    xSpeed: 0,
+    ySpeed: 0,
+  };
 
   // one-time setup
   var interval = setInterval(newFrame, FRAMES_PER_SECOND_INTERVAL);   // execute newFrame every 0.0166 seconds (60 Frames per second)
-  $(document).on('eventType', handleEvent);                           // change 'eventType' to the type of event you want to handle
+  $(document).on('keydown', handleKeyDown);                           // change 'eventType' to the type of event you want to handle
 
   ////////////////////////////////////////////////////////////////////////////////
   ///////////////////////// CORE LOGIC ///////////////////////////////////////////
@@ -27,15 +39,41 @@ function runProgram(){
   by calling this function and executing the code inside.
   */
   function newFrame() {
-    
+    repositionGameItem();
+    redrawGameItem();
 
   }
   
   /* 
   Called in response to events.
   */
-  function handleEvent(event) {
-
+  function handleKeyDown(event) {
+    if (event.which === KEY.UP) {
+      walker.ySpeed = -5;
+    }
+    if (event.which === KEY.DOWN) {
+      walker.ySpeed = 5;
+    }
+    if (event.which === KEY.LEFT) {
+      walker.xSpeed = -5;
+    }
+    if (event.which === KEY.RIGHT) {
+      walker.xSpeed = 5;
+    }
+  }
+  function handleKeyUp(event) {
+    if (event.which === KEY.UP) {
+      walker.ySpeed = 0;
+    }
+    if (event.which === KEY.DOWN) {
+      walker.ySpeed = 0;
+    }
+    if (event.which === KEY.LEFT) {
+      walker.xSpeed = 0;
+    }
+    if (event.which === KEY.RIGHT) {
+      walker.xSpeed = 0;
+    }
   }
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -50,5 +88,19 @@ function runProgram(){
     // turn off event handlers
     $(document).off();
   }
+  
+}
+
+function repositionGameItem() {
+  walker.xPos += walker.xSpeed;
+  walker.yPos += walker.ySpeed;
+}
+
+function redrawGameItem() {
+  $("#walker").css("left", walker.xPos);
+  $("#walker").css("top", walker.yPos);
+}
+
+function wallCollision(){
   
 }
