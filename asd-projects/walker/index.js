@@ -32,12 +32,16 @@ function runProgram(){
     yPos: 0,
     xSpeed: 0,
     ySpeed: 0,
+    width: $("#walker").width(),
+    height: $("#walker").height(),
   };
   var walker2 = {
     xPos: BOARD_WIDTH - WALKER_WIDTH,
     yPos: BOARD_HEIGHT - WALKER_HEIGHT,
     xSpeed: 0,
     ySpeed: 0,
+    width: $("#walker2").width(),
+    height: $("#walker2").height(),
   };
 
   // one-time setup
@@ -57,6 +61,7 @@ function runProgram(){
     repositionGameItem();
     wallCollision();
     redrawGameItem();
+    showResult(ballCollide(walker, walker2))
   }
   
   /* 
@@ -154,6 +159,45 @@ function runProgram(){
     $("#walker2").css("background-color", walkerColor);
   }
 
+  
+
+  function ballCollide(walker, walker2) {
+    walker.leftX = walker.xPos;
+    walker.topY = walker.yPos;
+    walker.rightX = walker.xPos + walker.width;
+    walker.bottomY = walker.yPos + walker.height;
+    
+    walker2.leftX = walker2.xPos;
+    walker2.topY = walker2.yPos;
+    walker2.rightX = walker2.xPos + walker2.width;
+    walker2.bottomY = walker2.yPos + walker2.height;
+
+    // TODO: Return true if they are overlapping, false otherwise
+	  if(
+      walker2.rightX > walker.leftX && walker2.leftX < walker.rightX &&
+      walker2.topY < walker.bottomY && walker2.bottomY > walker.topY
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function showResult(result) {
+    if(result){
+      $("h2").text(endGame())
+      $("h2").text("YOU GOT TOUCHED")
+    }
+    else {
+      $("h2").text("")
+    }
+    if(ballCollide(walker, walker2)) {
+      walker.xPos = 0;
+      walker.yPos = 0;
+      walker2.xPos = BOARD_WIDTH - WALKER_WIDTH
+      walker2.yPos = BOARD_HEIGHT - WALKER_HEIGHT;
+    }
+  } 
   function endGame() {
     // stop the interval timer
     clearInterval(interval);
