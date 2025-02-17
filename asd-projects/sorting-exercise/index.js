@@ -14,15 +14,46 @@ The CSS ids you will work with are:
 ///////////////////////////////////////////////////////////////////////
 
 // TODO 2: Implement bubbleSort
-
+//sorting all of the bubbles from smallest to largest
+async function bubbleSort(array){
+    for(let i = 0; i < array.length -1; i++){ //what is pushing through the array
+        for(let j = array.length -1;j > 1; j--){ //inner loop is responsible for actual sorting
+            if(array[j].value < array[j-1].value){ //
+                swap(array, j, j-1); //function that does the swapping
+                updateCounter(bubbleCounter); //updating the count of the bubbles
+                await sleep(); //slows down the sorting so that we can watch it happen
+            }
+        }
+    }
+}
 
 // TODO 3: Implement quickSort
+// sorts all elements of the provided array from smallest to largest
+async function quickSort(array, left, right){
+    if(right - left < 0){
+        return;
+    }
 
+    var index = await partition(array, left, right)
+    if(left < index - 1){
+        await quickSort(array, left, index - 1);
+    }
+
+    if(right > index){
+        await quickSort(array, index, right);
+    }
+}
 
 // TODOs 4 & 5: Implement partition
 
 
 // TODO 1: Implement swap
+function swap(array, i, j){
+    var temp = array[i]; //stores array[i] in temporary variable
+    array[i] = array[j]; //storing j to i
+    array[j] = temp; //storing temp into j
+    drawSwap(array, i, j); //what is visually drawing the swaps
+}
 
 
 ///////////////////////////////////////////////////////////////////////
