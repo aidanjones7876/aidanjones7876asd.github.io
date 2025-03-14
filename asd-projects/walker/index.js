@@ -152,6 +152,7 @@ function runProgram(){
       walker2.yPos -= walker2.ySpeed;
     }
   }
+  
   function changeColor() {
     var walkerColor = $("#walker").css("background-color");
     var walker2Color = $("#walker2").css("background-color");
